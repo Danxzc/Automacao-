@@ -1,0 +1,27 @@
+name: Build Conferencia_Sobras.exe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Instalar dependências
+        run: pip install pyinstaller pandas openpyxl
+      - name: Empacotar .exe
+        run: |
+          pyinstaller `
+            --onefile `
+            --noconsole `
+            --name Conferencia_Sobras `
+            conferencia_sobras.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Conferencia_Sobras
+          path: dist\Conferencia_Sobras.exe
+          retention-days: 7
